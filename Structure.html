@@ -3,101 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBot</title>
+    <title>TZ Learners</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Design.css">
-    <script src="Function.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="gear (4).png">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 font-inter">
-    <header class="bg-blue-500 text-white py-4 shadow-md">
-        <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-semibold">StudyBot</h1>
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl transition-transform hover:scale-105">
+        <img src="Wrench Book 1.jpg" style="height: 110px;width: 110px;float: left;">
+        <h1 style="font-size: 30px;margin-top: 40px;float: left;" class="text-2xl font-semibold text-indigo-600 text-center mb-6">Question Generator</h1>
+        <p style="font-size: 20px;margin-top: 150px;" class="text-gray-700 text-center mb-4">Generate Question</p>
+
+        <div class="mb-4">
+            <label for="topic" class="block text-gray-700 text-sm font-bold mb-2">Select a Topic:</label>
+            <select id="topic" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="math">Mathematics</option>
+                <option value="science">Science</option>
+                <option value="biology">Biology</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="physics">Physics</option>
+            </select>
         </div>
-    </header>
 
-    <main class="container mx-auto py-6 px-4">
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <div id="chat-container">
-                <div id="chat-log" class="mb-4 p-4 rounded-md bg-gray-50 border border-gray-200 overflow-y-auto h-64">
-                    <div class="text-gray-700">Welcome to StudyBot! How can I help you today?</div>
-                </div>
-                <div class="flex space-x-2">
-                    <input type="text" id="user-input" placeholder="Type your message..." class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-                    <button id="send-button" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                        Send
-                    </button>
-                </div>
-            </div>
+        <div class="mb-4">
+            <label for="difficulty" class="block text-gray-700 text-sm font-bold mb-2">Select Difficulty:</label>
+            <select id="difficulty" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
         </div>
-    </main>
 
-    <footer class="bg-gray-200 text-gray-600 py-4 text-center">
-        <p>&copy; 2024 <span id="copyright">TZ Friends</span>. All rights reserved.</p>
-    </footer>
+        <div class="mb-4">
+            <label for="problem-type" class="block text-gray-700 text-sm font-bold mb-2">Select Problem Type:</label>
+            <select id="problem-type" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="multiple_choice">One Word</option>
+                <option value="short_answer">Short Answer</option>
+                <option value="essay">Essay</option>
+            </select>
+        </div>
 
-    <script>
-        // Get references to HTML elements
-        const chatLog = document.getElementById('chat-log');
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
+        <div class="mb-6">
+            <button id="generate" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out w-full">
+                Generate Problem
+            </button>
+        </div>
 
-        // Function to add a message to the chat log
-        function addMessage(sender, message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('mb-2'); // Add margin for spacing
+        <div id="problem" class="border rounded-md p-4 bg-gray-50 text-gray-800 text-lg leading-relaxed">
+            <p class="text-center italic text-gray-600">A problem will appear here...</p>
+        </div>
+    </div>
 
-            const senderSpan = document.createElement('span');
-            senderSpan.classList.add('font-semibold', sender === 'You' ? 'text-blue-500' : 'text-green-500'); // Style sender name
-            senderSpan.textContent = sender + ': ';
-
-            const messageSpan = document.createElement('span');
-            messageSpan.textContent = message;
-            messageDiv.appendChild(senderSpan);
-            messageDiv.appendChild(messageSpan);
-            chatLog.appendChild(messageDiv);
-
-            // Scroll to the bottom of the chat log to show the latest message
-            chatLog.scrollTop = chatLog.scrollHeight;
-        }
-
-        // Function to handle user input and generate a response
-        function handleInput() {
-            const userMessage = userInput.value.trim();
-
-            if (userMessage === '') return; // Don't send empty messages
-
-            addMessage('You', userMessage);
-            userInput.value = ''; // Clear the input field
-
-            // Simulate a response from the bot (replace with your actual logic)
-            let botResponse = getBotResponse(userMessage);
-            addMessage('StudyBot', botResponse);
-        }
-
-        // Function to generate a bot response (replace with your logic)
-        function getBotResponse(userMessage) {
-            userMessage = userMessage.toLowerCase(); // Convert to lowercase for easier matching
-
-            if (userMessage.includes('hello') || userMessage.includes('hi') || userMessage.includes('hey')) {
-                return "Hello there!";
-            } else if (userMessage.includes('how are you')) {
-                return "I'm doing well, thank you!";
-            } else if (userMessage.includes('help')) {
-                return "I can help you with study resources and answer questions.  Try asking me about a specific topic!";
-            } else {
-                return "I'm sorry, I don't understand that yet.  Could you please rephrase your question?";
-            }
-        }
-
-        // Event Listeners
-        sendButton.addEventListener('click', handleInput);
-        userInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                handleInput();
-            }
-        });
-    </script>
+    <script src="Function.js"></script>
 </body>
 </html>
